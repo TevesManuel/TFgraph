@@ -2,13 +2,18 @@ import matplotlib.pyplot as plt
 from scipy import signal
 import numpy as np
 
-numerador = [int(input("Introduce el valor de k: "))]
-denominador = [1, 9, 20, 0]
+numerador = [10]
+denominador = [1, 2.5, 1]
 
 sistema = signal.TransferFunction(numerador, denominador)
 
-freqs, gain, phase = signal.bode(sistema, np.logspace(0, 10, num=10000))
+viewSize = 10
 
+resolution = viewSize*2*1000
+
+scope = np.logspace(-viewSize, viewSize, num=resolution)
+
+freqs, gain, phase = signal.bode(sistema, scope)
 
 min_diff_index = np.argmin(np.abs(gain))  # Índice de la ganancia más cercana a 0 dB
 min_diff_gain = gain[min_diff_index]      # Valor de la ganancia mínima
@@ -17,7 +22,7 @@ min_diff_freq = phase[min_diff_index]     # Frecuencia correspondiente
 print("Ganancia más cercana a 0 dB:", min_diff_gain, "dB")
 print("Frecuencia correspondiente:", min_diff_freq, "Hz")
 
-if(min_diff_freq > -179.9):
+if(abs(min_diff_freq) < 179.9):
     print("El sistema es estable")
 else:
     print("El sistema es inestable")
@@ -38,7 +43,7 @@ plt.grid(which="both", linestyle="--", linewidth=0.5)
 plt.tight_layout()
 plt.show()
 
-w, h = signal.freqresp(sistema, np.logspace(0, 10, num=10000))
+w, h = signal.freqresp(sistema, scope)
 
 # Graficar el diagrama de Nyquist (parte real vs. parte imaginaria)
 plt.figure(figsize=(8, 6))

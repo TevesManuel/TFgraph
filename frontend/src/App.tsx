@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 import './App.css';
+
 import DegreeFunctionInput from './components/DegreeFunctionInput/DegreeFunctionInput';
 import CoeficientFunctionInput from './components/CoeficientFunctionInput/CoeficientFunctionInput';
 
 const App : React.FC = () => {
-    const [quantity, setQuantity] = useState<number>(1); // Estado para el valor
+    const [numGrade, setNumGrade] = useState<number>(1);
+    const [denGrade, setDenGrade] = useState<number>(1);
 
-    const handleQuantityChange = (newValue: number) => {
-      setQuantity(newValue); // Actualiza el valor del estado cuando cambia el input
-    };
+    const numInputs = [];
+    for (let i = 0; i < numGrade; i++) {
+        numInputs.push(
+        <div style={{'display': 'flex', 'alignItems': 'center'}}>
+            <CoeficientFunctionInput key={i} />
+            <p>s^{numGrade-i-1}</p>
+            {numGrade-i-1 != 0 ? <p>+</p> : ""}
+        </div>
+      );
+    }
 
-    const inputs = [];
-    for (let i = 0; i < quantity; i++) {
-      inputs.push(
-        <div key={i}>
-            <CoeficientFunctionInput value={quantity} onChange={handleQuantityChange}/>
+    const denInputs = [];
+    for (let i = 0; i < denGrade; i++) {
+        denInputs.push(
+        <div style={{'display': 'flex', 'alignItems': 'center'}}>
+            <CoeficientFunctionInput key={i} />
+            s^{denGrade-i-1}
         </div>
       );
     }
@@ -27,11 +37,19 @@ const App : React.FC = () => {
             <div className='mainApp'>
                 <div>
                     <div className='gradeMainContainer'>
-                        <p>Grade of the numerador</p>
-                        <DegreeFunctionInput value={quantity} onChange={handleQuantityChange}/>
+                        <p>Grade of the numerator</p>
+                        <DegreeFunctionInput value={numGrade} setter={setNumGrade}/>
+                    </div>
+                    <div className='gradeMainContainer'>
+                        <p>Grade of the denominator</p>
+                        <DegreeFunctionInput value={denGrade} setter={setDenGrade}/>
                     </div>
                     <div className='coefMainContainer'>
-                        {inputs}
+                        {numInputs}
+                    </div>
+                    <div className='divisorLine'></div>
+                    <div className='coefMainContainer'>
+                        {denInputs}
                     </div>
                 </div>
             </div>

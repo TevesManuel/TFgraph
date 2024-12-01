@@ -1,0 +1,6 @@
+.CoeficientFunctionInputMainContainer {
+    margin: 10px;
+}
+.CoeficientFunctionInputMainContainer > input{
+    width: 100%;
+}
